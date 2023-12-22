@@ -31,9 +31,21 @@ async function run() {
     const TaskCollection = client.db("taskManagementApp").collection("task");
 
 // user info
+// app.post("/user",async(req,res)=>{
+//     const user=req.body;
+//     const result=await UserCollection.insertOne(user)
+//     res.send(result)
+// })
 app.post("/user",async(req,res)=>{
-    const user=req.body;
+  const user=req.body;
+  console.log(user)
+    const query={email:user.email}
+    const existingUser=await UserCollection.findOne(query)
+    if(existingUser){
+      return res.send({message:"user already exists",insertedId:null})
+    }
     const result=await UserCollection.insertOne(user)
+    console.log(result)
     res.send(result)
 })
 
